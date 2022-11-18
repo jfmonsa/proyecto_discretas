@@ -137,3 +137,8 @@ int fn_verificarRango(char*ptr){
     }
     return 0;
 }
+
+int yyerror(void){
+    printf("\nError lexico: Caracter invalido: %s, saliendo ...\n",yytext);
+    exit(1);
+}
