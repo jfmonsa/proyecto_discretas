@@ -29,6 +29,7 @@
 
 ## Ejemplo BNF python
 - https://docs.python.org/3/reference/grammar.html
+- https://github.com/shnewto/bnf
 ## Otras alternativas
 - https://www.dabeaz.com/ply/ply.html
 ## Generar el pdf con LaTex
