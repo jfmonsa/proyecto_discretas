@@ -21,5 +21,11 @@
 - https://www.youtube.com/watch?v=54bo1qaHAfk&ab_channel=JonathanEngelsma
 - https://www.youtube.com/watch?v=__-wUHG2rfM&ab_channel=JonathanEngelsma pt2
 
+#### Mas videos xd
+- https://www.youtube.com/watch?v=IGBCNH7_JOA
+- https://www.youtube.com/watch?v=7p4yF_Qmimg
+- https://www.youtube.com/watch?v=h14KqP9zUrk
+- https://www.youtube.com/watch?v=gnSok6mbvug
+
 ### Informacion adicional
 - http://www.lcc.uma.es/~galvez/ftp/libros/Compiladores.pdf
