@@ -27,5 +27,11 @@
 - https://www.youtube.com/watch?v=h14KqP9zUrk
 - https://www.youtube.com/watch?v=gnSok6mbvug
 
+## Ejemplo BNF python
+- https://docs.python.org/3/reference/grammar.html
+## Otras alternativas
+- https://www.dabeaz.com/ply/ply.html
+## Generar el pdf con LaTex
+- https://ctan.org/pkg/syntax-mdw
 ### Informacion adicional
 - http://www.lcc.uma.es/~galvez/ftp/libros/Compiladores.pdf
