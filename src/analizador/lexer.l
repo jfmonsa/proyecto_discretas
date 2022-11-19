@@ -5,6 +5,7 @@
 #include <stdlib.h>
 #include <conio.h>
 #include <string.h>
+#include "y.tab.h"
 FILE *yyin
 %}
 
@@ -68,7 +69,7 @@ WRITE "write"|"WRITE"
     Si una regla hace match pasa al siguiente token y puede que la regla siguiente era que yo queria matchear
     Ej: si ponga la tregal del IDENTIFICADOR primero no va a llegar a las reglas de las palabras reservadas
 */
-
+%%
 {OP_DOSPUNTOS} {printf("\nOP_DOSPUNTOS (%s)",yytext);}
 {FIN_SENTENCIA} {printf("\nFIN_SENTENCIA (%s)",yytext);}
 {CHAR_COMA} {printf("\nCHAR_COMA (%s)",yytext);}
@@ -111,7 +112,9 @@ WRITE "write"|"WRITE"
 "\n"
 "\t"
 " "
-.   yyerror(); /*Sui llego aca es pq no encontro ninguna regex o token que metchee con el caracter leido por FLEX*/
+[[:blank]]
+
+.   yyerror(); /*Si llego aca es pq no encontro ninguna regex o token que metchee con el caracter leido por FLEX*/
 %%
 
 int main (int argc, char *argv[]){
@@ -127,7 +130,7 @@ int main (int argc, char *argv[]){
     fclose(yyin);
     return 0;
 }
-%%
+
 /*-32768 to 3232768*/
 int fn_verificarRango(char*ptr){
     int value = atoi(ptr);
