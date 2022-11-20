@@ -44,10 +44,12 @@ $
 <empty_spc> ::= " "
 <dashes> ::= [-_]
 <coma> ::= ","
+<new_line> ::= "\n"
 
 <int> ::= -?[1-9][0-9]*
 <bool> ::= <true> | <false>
-<string> ::= [a-zA-Z]*
+<char> ::= [a-zA-Z]+
+<string> ::= <char> | <dashes> | <int>
 
 <str_comment> ::= "/*"
 <end_comment> ::= "*/"
@@ -59,33 +61,58 @@ $
 <op_division> ::= "/"
 
 <op_asignat> ::= "="
+
 <op_comp_equal> ::= "=="
+<op_max> ::= ">"
+<op_min> ::= "<"
 <op_min_equal> ::= "<="
 <op_max_equal> ::= ">="
 <op_not> ::= "!"
 <op_diff> ::= "!="
+
+<comparation_logic> ::= <int> |
+                      <identifier> |
+                      <comparation_logic><op_diff><comparation_logic> |
+                      <comparation_logic><op_comp_equal><comparation_logic> |
+                      <op_not><identifier>
+
+<comparation_int> ::= <int> |
+                      <identifier> |
+                      <comparation_int><op_max><comparation_int>|
+                      <comparation_int><op_min><comparation_int>|
+                      <comparation_int><op_min_equal><comparation_int>|
+                      <comparation_int><op_max_equal><comparation_int>|
+
+<srt_bracket> ::= "{"
+<end_bracket> ::= "}"
+<str_parenth> ::= ")"
+<end_parenth> ::= "("
+
+<continue> ::= "continue"
+<break> ::= "break"
+<return> ::= "return"
+
+<identifier> ::= <char>(<char>|<int>|<dashes>)*
 $
 
 $
 <expr> ::= <expr_simp> | <expr_comp>
-
-<expr_simp> ::= <asignat> <semicolon> |
-                <return> <semicolon> |
-                <break> <semicolon> |
-                <contin> <semicolon> |
-                <empty_spc> <semicolon> |
-                <new_line>
-                
+           
 <expr_comp> ::= <function_def> |
                 <if_stmt> |
+                <else_stmt> |
+                <elif_stmt> |
                 <while_stmt> |
-                <for_stmt>
+                <for_stmt> |
+                <new_line>
 
-<expr> ::= <int> |
+<expr_simp> ::= <int> |
            <bool> |
            <math_op> |
            <identifier> |
-           <asignat>
+           <asignat> |
+           <continue> |
+           <break>
 
 <math_exp> ::= <int> |
                <identifier> |
@@ -94,84 +121,47 @@ $
                <math_exp> <op_multiply> <math_exp> |
                <math_exp> <op_division> <math_exp>
                
-<asignat> ::= <identifier> <op_asign>
-<sum> ::= (<math_exp> <op_sum> <math_exp>)+
-<identifier> <op_asign>
- 
-<sustract>
-<multiply>
-<division>
+<asignat> ::= <identifier> <op_asign> <expr>
 
-<return>
-<break>
-<contin>
-<empty_space>
-<new_line>
 
-<function_def>
-<if_stmt>
-<while_stmt>
-<for_stmt>
+<if_stmt> ::= "if" <str_parenth> (<bool>|<comparation_int>|<comparation_logic>)+ <end_parenth>
+              <str_bracket>
+              (<expr_simp>|<expr_comp>)+
+              <end_bracket>
+              (<elif_stmt>|<else_stmt>)*
 
-<identifier>
-<semicolon>
+<else_stmt> ::= "else" <str_bracket> (<expr_simp>|<expr_comp>)+ <end_bracket>
 
+<elif_stmt> ::= "if" <str_parenth> (<bool>|<comparation_int>|<comparation_logic>)+ <end_parenth>
+              <str_bracket>
+              (<expr_simp>|<expr_comp>)+
+              <end_bracket>
+              (<elif_stmt>)*
+              (<else_stmt>)* 
+
+<while_stmt> ::= "while" <str_parenth> (<bool>|<comparation_int>|<comparation_logic>)+ <end_parenth>
+  <str_bracket>
+    (<expr_simp>|<expr_comp>)+
+  <end_bracket> 
+
+<for_stmt> ::= "for" 
+  <str_parenth>
+    <asignat> <semicolon>
+    <comparation_int> <semicolon>
+    <int><op_sum><op_sum>
+  <end_parenth>
+
+<function_def> ::= <identifier> <str_parenth> (<expr_simp>(<coma>)*)* <end_parenth>
+<str_bracket>
+  (<expr_simp>|<expr_comp>)+
+<end_bracket>
 $
 
 ## Tokens
-NUMERO [0-9]
-CHAR [a-zA-Z]
-SPACE [" "]
-INI_COMENTARIO ["/*"]
-FIN_COMENTARIO ["*/"]
-GUIONES [-_]
-CHAR_COMA [","]
-CHAR_PUNTO ["."]
-CHAR_PUNTOYCOMA [";"]
-CHAR_DOSPUNTOS [":"]
 
-IDENTIFICADOR {LETRA}({LETRA}|{DIGITO}|{GUIONES})*
-CONST_INTEGER (-?[1-9][0-9]{0,4})|0
-CONST_FLOAT {DIGITO}{0,8}{CHAR_PUNTO}{DIGITO}{1,8}
+IDENTIFICADOR 
 /*La regex de abajo considera string todo aquello dentro de las comillas dobles excepto el caracter de fin de linea y la propia comilla doble*/
-/*CONST_CADENA \"[^\n"]*\"*/
-
 
   ```
-  /*Seccion de tonkes*/
-
-
-
-  /*Operadores logicos y operadores aritmeticos basicos*/
-  OP_SUMA ["+"]
-  OP_RESTA  ["-"]
-  OP_MULT ["*"]
-  OP_DIV ["/"]
-  OP_IGUAL ["="]
-  OP_MAYOR [">"]
-  OP_MENOR ["<"]
-  OP_MAYORIGUAL [">="] 
-  OP_MENORIGUAL ["<="]
-  OP_COMP_IGUAL ["=="]
-  OP_NEGACION ["!"]
-  OP_DISTINTO ["!="]
-  /*Tiene doble funcionalidad, definir un tipo de datos o asignar un valor*/
-  OP_DOSPUNTOS [":"]
-
-  /* Caracteres de apertura, cierre y fin de linea */
-  LLAVE_A ["{"]
-  LLAVE_C ["}"]
-  PARENTESIS_A ["("]
-  PARENTESIS_C [")"]
-  FIN_SENTENCIA [";"]
-
-  /*Palabras reservadas*/
-  IF "if"|"IF"
-  WHILE "while"|"WHILE"
-  DECVAR "DECVAR"
-  ENDDEC "ENDDEC"
-  INTEGER "INTEGER"|"integer"
-  FLOAT "float"|"FLOAT"
-  WRITE "write"|"WRITE"
 
 ```
