@@ -38,130 +38,120 @@
 - http://www.lcc.uma.es/~galvez/ftp/libros/Compiladores.pdf
 
 # Backus Naur Form
-#Tokens
-$
-<semicolon> ::= ";"
-<empty_spc> ::= " "
-<dashes> ::= [-_]
-<coma> ::= ","
-<new_line> ::= "\n"
 
-<int> ::= -?[1-9][0-9]*
-<bool> ::= <true> | <false>
-<char> ::= [a-zA-Z]+
-<string> ::= <char> | <dashes> | <int>
+```
+  <semicolon> ::= ";"
+  <empty_spc> ::= " "
+  <dashes> ::= [-_]
+  <coma> ::= ","
+  <new_line> ::= "\n"
 
-<str_comment> ::= "/*"
-<end_comment> ::= "*/"
-<oneline_comment> ::= "//"
+  <int> ::= -?[1-9][0-9]*
+  <bool> ::= <true> | <false>
+  <char> ::= [a-zA-Z]+
+  <string> ::= <char> | <dashes> | <int>
 
-<op_sum> ::= "+"
-<op_minus> ::= "-"
-<op_multiply> ::= "*"
-<op_division> ::= "/"
+  <str_comment> ::= "/*"
+  <end_comment> ::= "*/"
+  <oneline_comment> ::= "//"
 
-<op_asignat> ::= "="
+  <op_sum> ::= "+"
+  <op_minus> ::= "-"
+  <op_multiply> ::= "*"
+  <op_division> ::= "/"
 
-<op_comp_equal> ::= "=="
-<op_max> ::= ">"
-<op_min> ::= "<"
-<op_min_equal> ::= "<="
-<op_max_equal> ::= ">="
-<op_not> ::= "!"
-<op_diff> ::= "!="
+  <op_asignat> ::= "="
 
-<comparation_logic> ::= <int> |
-                      <identifier> |
-                      <comparation_logic><op_diff><comparation_logic> |
-                      <comparation_logic><op_comp_equal><comparation_logic> |
-                      <op_not><identifier>
+  <op_comp_equal> ::= "=="
+  <op_max> ::= ">"
+  <op_min> ::= "<"
+  <op_min_equal> ::= "<="
+  <op_max_equal> ::= ">="
+  <op_not> ::= "!"
+  <op_diff> ::= "!="
 
-<comparation_int> ::= <int> |
-                      <identifier> |
-                      <comparation_int><op_max><comparation_int>|
-                      <comparation_int><op_min><comparation_int>|
-                      <comparation_int><op_min_equal><comparation_int>|
-                      <comparation_int><op_max_equal><comparation_int>|
+  <comparation_logic> ::= <int> |
+                        <identifier> |
+                        <comparation_logic><op_diff><comparation_logic> |
+                        <comparation_logic><op_comp_equal><comparation_logic> |
+                        <op_not><identifier>
 
-<srt_bracket> ::= "{"
-<end_bracket> ::= "}"
-<str_parenth> ::= ")"
-<end_parenth> ::= "("
+  <comparation_int> ::= <int> |
+                        <identifier> |
+                        <comparation_int><op_max><comparation_int>|
+                        <comparation_int><op_min><comparation_int>|
+                        <comparation_int><op_min_equal><comparation_int>|
+                        <comparation_int><op_max_equal><comparation_int>|
 
-<continue> ::= "continue"
-<break> ::= "break"
-<return> ::= "return"
+  <srt_bracket> ::= "{"
+  <end_bracket> ::= "}"
+  <str_parenth> ::= ")"
+  <end_parenth> ::= "("
 
-<identifier> ::= <char>(<char>|<int>|<dashes>)*
-$
+  <continue> ::= "continue"
+  <break> ::= "break"
+  <return> ::= "return"
 
-$
-<expr> ::= <expr_simp> | <expr_comp>
-           
-<expr_comp> ::= <function_def> |
-                <if_stmt> |
-                <else_stmt> |
-                <elif_stmt> |
-                <while_stmt> |
-                <for_stmt> |
-                <new_line>
+  <identifier> ::= <char>(<char>|<int>|<dashes>)*
 
-<expr_simp> ::= <int> |
-           <bool> |
-           <math_op> |
-           <identifier> |
-           <asignat> |
-           <continue> |
-           <break>
+  <expr> ::= <expr_simp> | <expr_comp>
 
-<math_exp> ::= <int> |
-               <identifier> |
-               <math_exp> <op_sum> <math_exp> |
-               <math_exp> <op_minus> <math_exp> |
-               <math_exp> <op_multiply> <math_exp> |
-               <math_exp> <op_division> <math_exp>
-               
-<asignat> ::= <identifier> <op_asign> <expr>
+  <expr_comp> ::= <function_def> |
+                  <if_stmt> |
+                  <else_stmt> |
+                  <elif_stmt> |
+                  <while_stmt> |
+                  <for_stmt> |
+                  <new_line>
+
+  <expr_simp> ::= <int> |
+             <bool> |
+             <math_op> |
+             <identifier> |
+             <asignat> |
+             <continue> |
+             <break>
+
+  <math_exp> ::= <int> |
+                 <identifier> |
+                 <math_exp> <op_sum> <math_exp> |
+                 <math_exp> <op_minus> <math_exp> |
+                 <math_exp> <op_multiply> <math_exp> |
+                 <math_exp> <op_division> <math_exp>
+
+  <asignat> ::= <identifier> <op_asign> <expr>
 
 
-<if_stmt> ::= "if" <str_parenth> (<bool>|<comparation_int>|<comparation_logic>)+ <end_parenth>
-              <str_bracket>
-              (<expr_simp>|<expr_comp>)+
-              <end_bracket>
-              (<elif_stmt>|<else_stmt>)*
+  <if_stmt> ::= "if" <str_parenth> (<bool>|<comparation_int>|<comparation_logic>)+ <end_parenth>
+                <str_bracket>
+                (<expr_simp>|<expr_comp>)+
+                <end_bracket>
+                (<elif_stmt>|<else_stmt>)*
 
-<else_stmt> ::= "else" <str_bracket> (<expr_simp>|<expr_comp>)+ <end_bracket>
+  <else_stmt> ::= "else" <str_bracket> (<expr_simp>|<expr_comp>)+ <end_bracket>
 
-<elif_stmt> ::= "if" <str_parenth> (<bool>|<comparation_int>|<comparation_logic>)+ <end_parenth>
-              <str_bracket>
-              (<expr_simp>|<expr_comp>)+
-              <end_bracket>
-              (<elif_stmt>)*
-              (<else_stmt>)* 
+  <elif_stmt> ::= "if" <str_parenth> (<bool>|<comparation_int>|<comparation_logic>)+ <end_parenth>
+                <str_bracket>
+                (<expr_simp>|<expr_comp>)+
+                <end_bracket>
+                (<elif_stmt>)*
+                (<else_stmt>)* 
 
-<while_stmt> ::= "while" <str_parenth> (<bool>|<comparation_int>|<comparation_logic>)+ <end_parenth>
+  <while_stmt> ::= "while" <str_parenth> (<bool>|<comparation_int>|<comparation_logic>)+ <end_parenth>
+    <str_bracket>
+      (<expr_simp>|<expr_comp>)+
+    <end_bracket> 
+
+  <for_stmt> ::= "for" 
+    <str_parenth>
+      <asignat> <semicolon>
+      <comparation_int> <semicolon>
+      <int><op_sum><op_sum>
+    <end_parenth>
+
+  <function_def> ::= <identifier> <str_parenth> (<expr_simp>(<coma>)*)* <end_parenth>
   <str_bracket>
     (<expr_simp>|<expr_comp>)+
-  <end_bracket> 
-
-<for_stmt> ::= "for" 
-  <str_parenth>
-    <asignat> <semicolon>
-    <comparation_int> <semicolon>
-    <int><op_sum><op_sum>
-  <end_parenth>
-
-<function_def> ::= <identifier> <str_parenth> (<expr_simp>(<coma>)*)* <end_parenth>
-<str_bracket>
-  (<expr_simp>|<expr_comp>)+
-<end_bracket>
-$
-
-## Tokens
-
-IDENTIFICADOR 
-/*La regex de abajo considera string todo aquello dentro de las comillas dobles excepto el caracter de fin de linea y la propia comilla doble*/
-
-  ```
+  <end_bracket>
 
 ```
