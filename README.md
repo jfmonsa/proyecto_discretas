@@ -116,7 +116,6 @@
   <str_bracket>
     (<expr_simp>|<expr_comp>)+
   <end_bracket>
-
 ```
 
 ## Recursos y tutoriales utilizados
