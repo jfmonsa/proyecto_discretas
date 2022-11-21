@@ -143,7 +143,7 @@
     <str_parenth>
       <asignat> <semicolon>
       <comparation_int> <semicolon>
-      <int><op_sum><op_sum>
+      <identifier><op_sum><op_sum>
     <end_parenth>
 
   <function_def> ::= <identifier> <str_parenth> (<expr_simp>(<coma>)*)* <end_parenth>
