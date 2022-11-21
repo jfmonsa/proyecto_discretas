@@ -30,10 +30,7 @@
 ## Ejemplo BNF python
 - https://docs.python.org/3/reference/grammar.html
 - https://github.com/shnewto/bnf
-## Otras alternativas
-- https://www.dabeaz.com/ply/ply.html
-## Generar el pdf con LaTex
-- https://ctan.org/pkg/syntax-mdw
+
 ### Informacion adicional
 - http://www.lcc.uma.es/~galvez/ftp/libros/Compiladores.pdf
 
