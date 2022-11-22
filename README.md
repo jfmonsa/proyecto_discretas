@@ -10,7 +10,7 @@
   <new_line> ::= "\n"
 
   <int> ::= -?[1-9][0-9]*
-  <bool> ::= <true> | <false>
+  <bool> ::= "true" | "false"
   <char> ::= [a-zA-Z]+
   <string> ::= <char> | <dashes> | <int>
 
