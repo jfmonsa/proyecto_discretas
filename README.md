@@ -4,10 +4,13 @@
 
 ```
   <semicolon> ::= ";"
-  <empty_spc> ::= " "
   <dashes> ::= [-_]
   <coma> ::= ","
+  
+  <empty_spc> ::= " "
   <new_line> ::= "\n"
+
+  <empty_chrs> ::= (<new_line> | <empty_spc>)*
 
   <int> ::= -?[1-9][0-9]*
   <bool> ::= "true" | "false"
@@ -53,7 +56,6 @@
 
   <continue> ::= "continue"
   <break> ::= "break"
-  <return> ::= "return"
 
   <identifier> ::= <char>(<char>|<int>|<dashes>)*
 
@@ -111,11 +113,10 @@
       <comparation_int> <semicolon>
       <identifier><op_sum><op_sum>
     <end_parenth>
+    <str_bracket>
+      (<expr_simp>|<expr_comp>)+
+    <end_bracket> 
 
-  <function_def> ::= <identifier> <str_parenth> (<expr_simp>(<coma>)*)* <end_parenth>
-  <str_bracket>
-    (<expr_simp>|<expr_comp>)+
-  <end_bracket>
 ```
 
 ## Recursos y tutoriales utilizados
