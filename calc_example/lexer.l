@@ -1,20 +1,19 @@
-%{
-#include <stdio.h>
-#include "y.tab.h"
-void yyerror(char *);
-%}
+%{ 
+  #include<stdio.h> 
+  #include "y.tab.h" 
+  void yyerror(char *);
+%} 
 
 %option noyywrap
-NUM -?[1-9][0-9]*
-EVALUAR ["evaluar"]
+  
+DIGIT   [0-9]
+NUM     {DIGIT}+("."{DIGIT}+)?
 
-
-%%
-{NUM} {yylval = atoi(yytext); return NUMBER;}
-{EVALUAR} {return EVALUAR;}
-"\n"
-"\t"
-" ";
-
-. yyerror("Caracter Invalido");
+/* Rule Section */
+%% 
+{NUM}               { yylval=atoi(yytext); return NUMBER; } 
+[-()+*/;]            { return *yytext; }
+"evaluar"            { return EVALUAR; }
+[[:blank:]] ;
+.                     yyerror("Unknown character");
 %%

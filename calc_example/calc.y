@@ -1,53 +1,84 @@
-%{
-    #include <stdio.h>
-    int yylex(void);
-    void yyerror(char *s);
-%}
-
+%{ 
+   #include<stdio.h> 
+   int yylex(void);
+   void yyerror(char *s);
+   /* FILE *yyin; */
+%} 
+  
 %token NUMBER EVALUAR
 
 %start INICIO
 %left '+' '-'
-%left '*' '/' 
-%%
-    INICIO
-        : EVALUAR '(' Expr ')' ';'
-        {
-            printf("\nResultado=%d\n",$3);
-            return 0;
-        }
-    ;
+%left '*' '/'
+%left NEG
 
-    Expr
-        : Expr '+' Expr
-        {
-            $$ = $1 + $3;
-        }
-        | Expr '-' Expr
-        {
-            $$ = $1 - $3;
-        }
-       | Expr '*' Expr
-        {
-            $$ = $1 * $3;
-        }
-        | Expr '/' Expr
-        {
-            $$ = $1 / $3;
-        }
-        | NUMBER {
-            $$ = $1;
-        }
+  
+/* Rule Section */
+%% 
+  
+INICIO 
+   : Lista {
+      return 0;
+   }
+;
 
-%%
+Lista 
+   : Lista EVALUAR '(' Expr ')' ';'
+   {
+      printf("\nResult=%d\n", $4);
+   }
+   | EVALUAR '(' Expr ')' ';'
+   { 
+      printf("\nResult=%d\n", $3); 
+   }
+;
+
+Expr 
+   : Expr '+' Expr 
+   {
+      $$ = $1 + $3; 
+   } 
+   | Expr '-' Expr 
+   {
+      $$ = $1 - $3;
+   } 
+   | Expr '*' Expr 
+   {
+      $$ = $1 * $3;
+   } 
+   | Expr '/' Expr 
+   {
+      $$ = $1/$3;
+   }
+   | '-' Expr %prec NEG {
+      $$ = -$2;
+   } 
+   |'(' Expr ')' 
+   {
+      $$ = $2;
+   } 
+   | NUMBER 
+   {
+      $$ = $1;
+   } 
+; 
+  
+%% 
+  
+//driver code
 int main(){
     return(yyparse());
 }
-  
+
 void yyerror(char *s) { 
    printf("\n%s\n", s); 
 }
 
-int yywrap(){
-    return 1;
+/*
+int  parse(FILE *file) { 
+   yyin = file;
+   int r = yyparse();
+   fclose(yyin);
+   return r;
 }
+*/
