@@ -7,11 +7,11 @@
 %token NUMBER EVALUAR
 
 %start INICIO
-%left "+" "-"
-%left "*" "/"
+%left '+' '-'
+%left '*' '/' 
 %%
     INICIO
-        : EVALUAR "(" Expr ")" ";"
+        : EVALUAR '(' Expr ')' ';'
         {
             printf("\nResultado=%d\n",$3);
             return 0;
@@ -19,19 +19,19 @@
     ;
 
     Expr
-        : Expr "+" Expr
+        : Expr '+' Expr
         {
             $$ = $1 + $3;
         }
-        | Expr "-" Expr
+        | Expr '-' Expr
         {
             $$ = $1 - $3;
         }
-       | Expr "*" Expr
+       | Expr '*' Expr
         {
             $$ = $1 * $3;
         }
-        | Expr "/" Expr
+        | Expr '/' Expr
         {
             $$ = $1 / $3;
         }

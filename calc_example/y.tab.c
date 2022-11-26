@@ -152,13 +152,13 @@ enum yysymbol_kind_t
   YYSYMBOL_YYUNDEF = 2,                    /* "invalid token"  */
   YYSYMBOL_NUMBER = 3,                     /* NUMBER  */
   YYSYMBOL_EVALUAR = 4,                    /* EVALUAR  */
-  YYSYMBOL_5_ = 5,                         /* "+"  */
-  YYSYMBOL_6_ = 6,                         /* "-"  */
-  YYSYMBOL_7_ = 7,                         /* "*"  */
-  YYSYMBOL_8_ = 8,                         /* "/"  */
-  YYSYMBOL_9_ = 9,                         /* "("  */
-  YYSYMBOL_10_ = 10,                       /* ")"  */
-  YYSYMBOL_11_ = 11,                       /* ";"  */
+  YYSYMBOL_5_ = 5,                         /* '+'  */
+  YYSYMBOL_6_ = 6,                         /* '-'  */
+  YYSYMBOL_7_ = 7,                         /* '*'  */
+  YYSYMBOL_8_ = 8,                         /* '/'  */
+  YYSYMBOL_9_ = 9,                         /* '('  */
+  YYSYMBOL_10_ = 10,                       /* ')'  */
+  YYSYMBOL_11_ = 11,                       /* ';'  */
   YYSYMBOL_YYACCEPT = 12,                  /* $accept  */
   YYSYMBOL_INICIO = 13,                    /* INICIO  */
   YYSYMBOL_Expr = 14                       /* Expr  */
@@ -495,7 +495,7 @@ union yyalloc
 #define YYNSTATES  17
 
 /* YYMAXUTOK -- Last valid token kind.  */
-#define YYMAXUTOK   266
+#define YYMAXUTOK   259
 
 
 /* YYTRANSLATE(TOKEN-NUM) -- Symbol number corresponding to TOKEN-NUM
@@ -513,6 +513,8 @@ static const yytype_int8 yytranslate[] =
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
+       9,    10,     7,     5,     2,     6,     2,     8,     2,     2,
+       2,     2,     2,     2,     2,     2,     2,     2,     2,    11,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
@@ -532,10 +534,7 @@ static const yytype_int8 yytranslate[] =
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
-       2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
-       2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
-       2,     2,     2,     2,     2,     2,     1,     2,     3,     4,
-       5,     6,     7,     8,     9,    10,    11
+       2,     2,     2,     2,     2,     2,     1,     2,     3,     4
 };
 
 #if YYDEBUG
@@ -559,8 +558,8 @@ static const char *yysymbol_name (yysymbol_kind_t yysymbol) YY_ATTRIBUTE_UNUSED;
 static const char *const yytname[] =
 {
   "\"end of file\"", "error", "\"invalid token\"", "NUMBER", "EVALUAR",
-  "\"+\"", "\"-\"", "\"*\"", "\"/\"", "\"(\"", "\")\"", "\";\"", "$accept",
-  "INICIO", "Expr", YY_NULLPTR
+  "'+'", "'-'", "'*'", "'/'", "'('", "')'", "';'", "$accept", "INICIO",
+  "Expr", YY_NULLPTR
 };
 
 static const char *
@@ -575,8 +574,8 @@ yysymbol_name (yysymbol_kind_t yysymbol)
    (internal) symbol number NUM (which must be that of a token).  */
 static const yytype_int16 yytoknum[] =
 {
-       0,   256,   257,   258,   259,   260,   261,   262,   263,   264,
-     265,   266
+       0,   256,   257,   258,   259,    43,    45,    42,    47,    40,
+      41,    59
 };
 #endif
 
@@ -1118,45 +1117,45 @@ yyreduce:
   YY_REDUCE_PRINT (yyn);
   switch (yyn)
     {
-  case 2: /* INICIO: EVALUAR "(" Expr ")" ";"  */
+  case 2: /* INICIO: EVALUAR '(' Expr ')' ';'  */
 #line 15 "calc.y"
         {
             printf("\nResultado=%d\n",yyvsp[-2]);
             return 0;
         }
-#line 1128 "y.tab.c"
+#line 1127 "y.tab.c"
     break;
 
-  case 3: /* Expr: Expr "+" Expr  */
+  case 3: /* Expr: Expr '+' Expr  */
 #line 23 "calc.y"
         {
             yyval = yyvsp[-2] + yyvsp[0];
         }
-#line 1136 "y.tab.c"
+#line 1135 "y.tab.c"
     break;
 
-  case 4: /* Expr: Expr "-" Expr  */
+  case 4: /* Expr: Expr '-' Expr  */
 #line 27 "calc.y"
         {
             yyval = yyvsp[-2] - yyvsp[0];
         }
-#line 1144 "y.tab.c"
+#line 1143 "y.tab.c"
     break;
 
-  case 5: /* Expr: Expr "*" Expr  */
+  case 5: /* Expr: Expr '*' Expr  */
 #line 31 "calc.y"
         {
             yyval = yyvsp[-2] * yyvsp[0];
         }
-#line 1152 "y.tab.c"
+#line 1151 "y.tab.c"
     break;
 
-  case 6: /* Expr: Expr "/" Expr  */
+  case 6: /* Expr: Expr '/' Expr  */
 #line 35 "calc.y"
         {
             yyval = yyvsp[-2] / yyvsp[0];
         }
-#line 1160 "y.tab.c"
+#line 1159 "y.tab.c"
     break;
 
   case 7: /* Expr: NUMBER  */
@@ -1164,11 +1163,11 @@ yyreduce:
                  {
             yyval = yyvsp[0];
         }
-#line 1168 "y.tab.c"
+#line 1167 "y.tab.c"
     break;
 
 
-#line 1172 "y.tab.c"
+#line 1171 "y.tab.c"
 
       default: break;
     }
