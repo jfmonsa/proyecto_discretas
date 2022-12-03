@@ -1,0 +1,6 @@
+x2=3;
+evaluar(x2);
+x3=2;
+evaluar(x3);
+evaluar(x2+x3);
+
