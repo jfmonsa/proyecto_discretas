@@ -135,6 +135,7 @@
 
 #### Introuduction to yacc
 - Yacc Manual <-- :D
+- Equivalencia entre la teoría y practica en yacc - http://webdiis.unizar.es/asignaturas/LGA/material_2010_2011/practicasLGA1-2.pdf
 - https://www.youtube.com/watch?v=yTXCPGAD3SQ&ab_channel=WayneCochran
 - https://www.youtube.com/watch?v=mGIme3D0NTA&ab_channel=WayneCochran pt2
 - https://www.youtube.com/watch?v=wEFvuOvllkM&ab_channel=WayneCochran pt3
