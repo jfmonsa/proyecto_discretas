@@ -134,6 +134,7 @@
 - https://www.youtube.com/watch?v=8zvgR9gbh68&ab_channel=ProgramacionPHPyMySQL
 
 #### Introuduction to yacc
+- Yacc Manual <-- :D
 - https://www.youtube.com/watch?v=yTXCPGAD3SQ&ab_channel=WayneCochran
 - https://www.youtube.com/watch?v=mGIme3D0NTA&ab_channel=WayneCochran pt2
 - https://www.youtube.com/watch?v=wEFvuOvllkM&ab_channel=WayneCochran pt3
