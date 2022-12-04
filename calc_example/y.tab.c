@@ -75,8 +75,144 @@
    int variables[1000];
 
    /* FILE *yyin; */
+   /*
 
-#line 80 "y.tab.c"
+         numeric : TINTEGER { $$ = new NInteger(atol($1->c_str())); delete $1; }
+               | TDOUBLE { $$ = new NDouble(atof($1->c_str())); delete $1; }
+               ;
+            
+         expr : ident TEQUAL expr { $$ = new NAssignment(*$<ident>1, *$3); }
+            | ident TLPAREN call_args TRPAREN { $$ = new NMethodCall(*$1, *$3); delete $3; }
+            | ident { $<ident>$ = $1; }
+            | numeric
+            | expr comparison expr { $$ = new NBinaryOperator(*$1, $2, *$3); }
+            | TLPAREN expr TRPAREN { $$ = $2; }
+            ;
+            
+
+         comparison : TCEQ | TCNE | TCLT | TCLE | TCGT | TCGE 
+                  | TPLUS | TMINUS | TMUL | TDIV
+                  ;
+                  
+                  block : TLBRACE stmts TRBRACE { $$ = $2; }
+               | TLBRACE TRBRACE { $$ = new NBlock(); }
+               ;
+
+      block : TLBRACE stmts TRBRACE { $$ = $2; }
+               | TLBRACE TRBRACE { $$ = new NBlock(); }
+               ;
+      */
+
+      /*
+  
+
+  <int> ::= -?[1-9][0-9]*
+  <bool> ::= "true" | "false"
+  <string>
+
+  <str_comment> 
+  <end_comment> :
+  <oneline_comment> ::= "//"
+
+  <op_sum> ::= "+"
+  <op_minus> ::= "-"
+  <op_multiply> ::= "*"
+  <op_division> ::= "/"
+
+  <op_asignat> ::= "="
+
+  <op_comp_equal> ::= "=="
+  <op_max> ::= ">"
+  <op_min> ::= "<"
+  <op_min_equal> ::= "<="
+  <op_max_equal> ::= ">="
+  <op_not> ::= "!"
+  <op_diff> ::= "!="
+
+  <comparation_logic> ::= <int> |
+                        <identifier> |
+                        <comparation_logic><op_diff><comparation_logic> |
+                        <comparation_logic><op_comp_equal><comparation_logic> |
+                        <op_not><identifier>
+
+  <comparation_int> ::= <int> |
+                        <identifier> |
+                        <comparation_int><op_max><comparation_int>|
+                        <comparation_int><op_min><comparation_int>|
+                        <comparation_int><op_min_equal><comparation_int>|
+                        <comparation_int><op_max_equal><comparation_int>|
+
+  <srt_bracket> ::= "{"
+  <end_bracket> ::= "}"
+  <str_parenth> ::= ")"
+  <end_parenth> ::= "("
+
+  <continue> ::= "continue"
+  <break> ::= "break"
+
+  <identifier> ::= <char>(<char>|<int>|<dashes>)*
+
+  <expr> ::= <expr_simp> | <expr_comp>
+
+  <expr_comp> ::= <if_stmt> |
+                  <else_stmt> |
+                  <elif_stmt> |
+                  <while_stmt> |
+                  <for_stmt> |
+                  <new_line>
+
+  <expr_simp> ::= <int> |
+             <bool> |
+             <math_op> |
+             <identifier> |
+             <asignat> |
+             <continue> |
+             <break>
+
+  <math_exp> ::= <int> |
+                 <identifier> |
+                 <math_exp> <op_sum> <math_exp> |
+                 <math_exp> <op_minus> <math_exp> |
+                 <math_exp> <op_multiply> <math_exp> |
+                 <math_exp> <op_division> <math_exp>
+
+  <asignat> ::= <identifier> <op_asign> <expr>
+
+
+  <if_stmt> ::= "if" <str_parenth> (<bool>|<comparation_int>|<comparation_logic>)+ <end_parenth>
+                <str_bracket>
+                (<expr_simp>|<expr_comp>)+
+                <end_bracket>
+                (<elif_stmt>|<else_stmt>)*
+
+  <else_stmt> ::= "else" <str_bracket> (<expr_simp>|<expr_comp>)+ <end_bracket>
+
+  <elif_stmt> ::= "if" <str_parenth> (<bool>|<comparation_int>|<comparation_logic>)+ <end_parenth>
+                <str_bracket>
+                (<expr_simp>|<expr_comp>)+
+                <end_bracket>
+                (<elif_stmt>)*
+                (<else_stmt>)* 
+
+  <while_stmt> ::= "while" <str_parenth> (<bool>|<comparation_int>|<comparation_logic>)+ <end_parenth>
+    <str_bracket>
+      (<expr_simp>|<expr_comp>)+
+    <end_bracket> 
+
+  <for_stmt> ::= "for" 
+    <str_parenth>
+      <asignat> <semicolon>
+      <comparation_int> <semicolon>
+      <identifier><op_sum><op_sum>
+    <end_parenth>
+    <str_bracket>
+      (<expr_simp>|<expr_comp>)+
+    <end_bracket> 
+      */
+
+
+
+#line 216 "y.tab.c"
 
 # ifndef YY_CAST
 #  ifdef __cplusplus
@@ -143,11 +279,11 @@ extern int yydebug;
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 union YYSTYPE
 {
-#line 9 "calc.y"
+#line 145 "calc.y"
 
    int valor_entero;
 
-#line 151 "y.tab.c"
+#line 287 "y.tab.c"
 
 };
 typedef union YYSTYPE YYSTYPE;
@@ -177,13 +313,13 @@ enum yysymbol_kind_t
   YYSYMBOL_9_ = 9,                         /* '*'  */
   YYSYMBOL_10_ = 10,                       /* '/'  */
   YYSYMBOL_NEG = 11,                       /* NEG  */
-  YYSYMBOL_12_ = 12,                       /* '('  */
-  YYSYMBOL_13_ = 13,                       /* ')'  */
-  YYSYMBOL_14_ = 14,                       /* ';'  */
+  YYSYMBOL_12_ = 12,                       /* ';'  */
+  YYSYMBOL_13_ = 13,                       /* '('  */
+  YYSYMBOL_14_ = 14,                       /* ')'  */
   YYSYMBOL_YYACCEPT = 15,                  /* $accept  */
-  YYSYMBOL_Program = 16,                   /* Program  */
-  YYSYMBOL_print = 17,                     /* print  */
-  YYSYMBOL_asignat = 18,                   /* asignat  */
+  YYSYMBOL_program = 16,                   /* program  */
+  YYSYMBOL_asignat = 17,                   /* asignat  */
+  YYSYMBOL_print = 18,                     /* print  */
   YYSYMBOL_math_op = 19                    /* math_op  */
 };
 typedef enum yysymbol_kind_t yysymbol_kind_t;
@@ -536,8 +672,8 @@ static const yytype_int8 yytranslate[] =
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
-      12,    13,     9,     7,     2,     8,     2,    10,     2,     2,
-       2,     2,     2,     2,     2,     2,     2,     2,     2,    14,
+      13,    14,     9,     7,     2,     8,     2,    10,     2,     2,
+       2,     2,     2,     2,     2,     2,     2,     2,     2,    12,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
@@ -563,10 +699,10 @@ static const yytype_int8 yytranslate[] =
 
 #if YYDEBUG
   /* YYRLINE[YYN] -- Source line where rule number YYN was defined.  */
-static const yytype_int8 yyrline[] =
+static const yytype_uint8 yyrline[] =
 {
-       0,    30,    30,    31,    32,    41,    47,    52,    56,    60,
-      64,    68,    71,    75,    79
+       0,   167,   167,   168,   169,   173,   180,   187,   191,   195,
+     199,   203,   206,   210,   214
 };
 #endif
 
@@ -584,7 +720,7 @@ static const char *const yytname[] =
 {
   "\"end of file\"", "error", "\"invalid token\"", "EVALUAR",
   "OP_ASIGNAT", "IDENTIFIER", "NUMBER", "'+'", "'-'", "'*'", "'/'", "NEG",
-  "'('", "')'", "';'", "$accept", "Program", "print", "asignat", "math_op", YY_NULLPTR
+  "';'", "'('", "')'", "$accept", "program", "asignat", "print", "math_op", YY_NULLPTR
 };
 
 static const char *
@@ -600,7 +736,7 @@ yysymbol_name (yysymbol_kind_t yysymbol)
 static const yytype_int16 yytoknum[] =
 {
        0,   256,   257,   258,   259,   260,   261,    43,    45,    42,
-      47,   262,    40,    41,    59
+      47,   262,    59,    40,    41
 };
 #endif
 
@@ -618,9 +754,9 @@ static const yytype_int16 yytoknum[] =
      STATE-NUM.  */
 static const yytype_int8 yypact[] =
 {
-       6,    -2,     1,    18,     6,     6,    11,    11,    -8,    -8,
-      -8,    -8,    -8,    11,    11,    17,    -6,    -8,    24,    11,
-      11,    11,    11,    14,    -8,    -8,    12,    12,    -8,    -8,
+       0,    -5,    18,    28,     0,     0,    -4,    -4,    -8,    -8,
+      -8,    -8,    -8,    -4,    -4,     9,    25,    -8,    17,    -4,
+      -4,    -4,    -4,    24,    -8,    -8,     1,     1,    -8,    -8,
       -8
 };
 
@@ -629,16 +765,16 @@ static const yytype_int8 yypact[] =
      means the default is an error.  */
 static const yytype_int8 yydefact[] =
 {
-       4,     0,     0,     0,     4,     4,     0,     0,     1,     3,
-       2,    14,    13,     0,     0,     0,     0,    11,     0,     0,
-       0,     0,     0,     0,     6,    12,     7,     8,     9,    10,
-       5
+       4,     0,     0,     0,     4,     4,     0,     0,     1,     2,
+       3,    14,    13,     0,     0,     0,     0,    11,     0,     0,
+       0,     0,     0,     0,     5,    12,     7,     8,     9,    10,
+       6
 };
 
   /* YYPGOTO[NTERM-NUM].  */
 static const yytype_int8 yypgoto[] =
 {
-      -8,    31,    -8,    -8,    -7
+      -8,    16,    -8,    -8,    -7
 };
 
   /* YYDEFGOTO[NTERM-NUM].  */
@@ -652,28 +788,28 @@ static const yytype_int8 yydefgoto[] =
      number is the opposite.  If YYTABLE_NINF, syntax error.  */
 static const yytype_int8 yytable[] =
 {
-      16,    19,    20,    21,    22,     7,    17,    18,    24,     1,
-       6,     2,    26,    27,    28,    29,    11,    12,     8,    13,
-       0,    21,    22,    14,    19,    20,    21,    22,    30,     0,
-      23,    19,    20,    21,    22,     9,    10,    25
+      16,    11,    12,     1,    13,     2,    17,    18,     6,    14,
+      21,    22,    26,    27,    28,    29,    19,    20,    21,    22,
+       9,    10,     7,    23,    19,    20,    21,    22,     8,     0,
+       0,    25,    19,    20,    21,    22,    30,    24
 };
 
 static const yytype_int8 yycheck[] =
 {
-       7,     7,     8,     9,    10,     4,    13,    14,    14,     3,
-      12,     5,    19,    20,    21,    22,     5,     6,     0,     8,
-      -1,     9,    10,    12,     7,     8,     9,    10,    14,    -1,
-      13,     7,     8,     9,    10,     4,     5,    13
+       7,     5,     6,     3,     8,     5,    13,    14,    13,    13,
+       9,    10,    19,    20,    21,    22,     7,     8,     9,    10,
+       4,     5,     4,    14,     7,     8,     9,    10,     0,    -1,
+      -1,    14,     7,     8,     9,    10,    12,    12
 };
 
   /* YYSTOS[STATE-NUM] -- The (internal number of the) accessing
      symbol of state STATE-NUM.  */
 static const yytype_int8 yystos[] =
 {
-       0,     3,     5,    16,    17,    18,    12,     4,     0,    16,
-      16,     5,     6,     8,    12,    19,    19,    19,    19,     7,
-       8,     9,    10,    13,    14,    13,    19,    19,    19,    19,
-      14
+       0,     3,     5,    16,    17,    18,    13,     4,     0,    16,
+      16,     5,     6,     8,    13,    19,    19,    19,    19,     7,
+       8,     9,    10,    14,    12,    14,    19,    19,    19,    19,
+      12
 };
 
   /* YYR1[YYN] -- Symbol number of symbol that rule YYN derives.  */
@@ -686,7 +822,7 @@ static const yytype_int8 yyr1[] =
   /* YYR2[YYN] -- Number of symbols on the right hand side of rule YYN.  */
 static const yytype_int8 yyr2[] =
 {
-       0,     2,     2,     2,     0,     5,     4,     3,     3,     3,
+       0,     2,     2,     2,     0,     4,     5,     3,     3,     3,
        3,     2,     3,     1,     1
 };
 
@@ -1154,93 +1290,91 @@ yyreduce:
   YY_REDUCE_PRINT (yyn);
   switch (yyn)
     {
-  case 4: /* Program: %empty  */
-#line 32 "calc.y"
-     {
-      return 0;
-   }
-#line 1163 "y.tab.c"
+  case 4: /* program: %empty  */
+#line 169 "calc.y"
+    {return 0;}
+#line 1297 "y.tab.c"
     break;
 
-  case 5: /* print: EVALUAR '(' math_op ')' ';'  */
-#line 42 "calc.y"
+  case 5: /* asignat: IDENTIFIER OP_ASIGNAT math_op ';'  */
+#line 174 "calc.y"
+   { variables[(yyvsp[-3].valor_entero)] = (yyvsp[-1].valor_entero); printf("==> Interpreter: var declaration: xn = %d\n", variables[(yyvsp[-3].valor_entero)]);}
+#line 1303 "y.tab.c"
+    break;
+
+  case 6: /* print: EVALUAR '(' math_op ')' ';'  */
+#line 181 "calc.y"
       { printf( "==> Interpreter: Resultado de la operacion = %d\n", (yyvsp[-2].valor_entero)); }
-#line 1169 "y.tab.c"
-    break;
-
-  case 6: /* asignat: IDENTIFIER OP_ASIGNAT math_op ';'  */
-#line 48 "calc.y"
-   { variables[(yyvsp[-3].valor_entero)] = (yyvsp[-1].valor_entero); printf("==> Perro hpta: var declaration: xn = %d\n", variables[(yyvsp[-3].valor_entero)]);}
-#line 1175 "y.tab.c"
+#line 1309 "y.tab.c"
     break;
 
   case 7: /* math_op: math_op '+' math_op  */
-#line 53 "calc.y"
+#line 188 "calc.y"
    {
       (yyval.valor_entero) = (yyvsp[-2].valor_entero) + (yyvsp[0].valor_entero); 
    }
-#line 1183 "y.tab.c"
+#line 1317 "y.tab.c"
     break;
 
   case 8: /* math_op: math_op '-' math_op  */
-#line 57 "calc.y"
+#line 192 "calc.y"
    {
       (yyval.valor_entero) = (yyvsp[-2].valor_entero) - (yyvsp[0].valor_entero);
    }
-#line 1191 "y.tab.c"
+#line 1325 "y.tab.c"
     break;
 
   case 9: /* math_op: math_op '*' math_op  */
-#line 61 "calc.y"
+#line 196 "calc.y"
    {
       (yyval.valor_entero) = (yyvsp[-2].valor_entero) * (yyvsp[0].valor_entero);
    }
-#line 1199 "y.tab.c"
+#line 1333 "y.tab.c"
     break;
 
   case 10: /* math_op: math_op '/' math_op  */
-#line 65 "calc.y"
+#line 200 "calc.y"
    {
       (yyval.valor_entero) = (yyvsp[-2].valor_entero)/(yyvsp[0].valor_entero);
    }
-#line 1207 "y.tab.c"
+#line 1341 "y.tab.c"
     break;
 
   case 11: /* math_op: '-' math_op  */
-#line 68 "calc.y"
+#line 203 "calc.y"
                            {
       (yyval.valor_entero) = -(yyvsp[0].valor_entero);
    }
-#line 1215 "y.tab.c"
+#line 1349 "y.tab.c"
     break;
 
   case 12: /* math_op: '(' math_op ')'  */
-#line 72 "calc.y"
+#line 207 "calc.y"
    {
       (yyval.valor_entero) = (yyvsp[-1].valor_entero);
    }
-#line 1223 "y.tab.c"
+#line 1357 "y.tab.c"
     break;
 
   case 13: /* math_op: NUMBER  */
-#line 76 "calc.y"
+#line 211 "calc.y"
    {
       (yyval.valor_entero) = (yyvsp[0].valor_entero);
    }
-#line 1231 "y.tab.c"
+#line 1365 "y.tab.c"
     break;
 
   case 14: /* math_op: IDENTIFIER  */
-#line 80 "calc.y"
+#line 215 "calc.y"
    {
       (yyval.valor_entero) = variables[(yyvsp[0].valor_entero)];
       // printf("\nidetifier = %d\n",variables[$1]);
    }
-#line 1240 "y.tab.c"
+#line 1374 "y.tab.c"
     break;
 
 
-#line 1244 "y.tab.c"
+#line 1378 "y.tab.c"
 
       default: break;
     }
@@ -1434,7 +1568,7 @@ yyreturn:
   return yyresult;
 }
 
-#line 86 "calc.y"
+#line 221 "calc.y"
  
   
 int main(){
