@@ -85,12 +85,12 @@ desicion_strt
 ;
 
 asignat :
-   IDENTIFIER OP_ASIGNAT values SEMICOLON
+   IDENTIFIER OP_ASIGNAT values
    { variables[$1] = $3; printf("==> Interpreter: var declaration: xn = %d\n", variables[$1]);}
 ;
 print 
    :
-   EVALUAR '(' math_op ')' SEMICOLON
+   EVALUAR '(' math_op ')'
       { printf( "==> Interpreter: Resultado de la operacion = %d\n", $3); }
 ;
 
