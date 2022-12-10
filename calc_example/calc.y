@@ -33,8 +33,18 @@
 
 %token SEMICOLON
 
-%token OP_DIFF OP_COMP_EQUAL OP_NOT OP_MAX OP_MIN OP_MAX_EQUAL OP_MIN_EQUAL OP_ASIGNAT
-%token OP_NEG OP_SUM OP_TIMES OP_DIV
+%token OP_DIFF
+%token OP_COMP_EQUAL
+%token OP_NOT
+%token OP_MAX
+%token OP_MIN
+%token OP_MAX_EQUAL
+%token OP_MIN_EQUAL
+%token OP_ASIGNAT
+%token OP_NEG
+%token OP_SUM
+%token OP_TIMES
+token OP_DIV
 
 %token BOOLEAN STRING
 %token <valor_entero> IDENTIFIER
